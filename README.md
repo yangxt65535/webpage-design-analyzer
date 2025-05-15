@@ -1,4 +1,4 @@
-# Web 设计图分析 MCP 服务器
+# webpage-design-analyzer-mcp
 
 Python实现的MCP服务器，提供本地图片绝对路径，通过调用视觉模型 API，生成前端页面的设计文档。
 
@@ -6,7 +6,7 @@ Python实现的MCP服务器，提供本地图片绝对路径，通过调用视�
 
 ### Tools
 
-- analyze_image_tool
+- analyze_image
   - 通过调用视觉大模型 API，分析页面设计图，制定开发方案
   - Input: `image_path`(string) 图片在设备上的绝对路径
   - Return (string): Markdown 格式输出的页面开发方案
@@ -30,12 +30,12 @@ uv python install 3.11
 uv python list
 ```
 
-在支持 MCP 的客户端中，通过以下方式引入：
+在支持 MCP 的客户端中，通过以下方式引入，注意声明 OPENAI 或与其兼容的 API 端点和密钥：
 
 ```json
 {
-  "key": "DesignAnalysis",
-  "description": "调用视觉模型API服务分析网页设计图内容，并返回AI的分析结果",
+  "key": "WebpageDesignAnalyzer",
+  "description": "提供本地图片绝对路径，通过调用视觉模型 API，生成前端页面的设计文档。",
   "command": "uv",
   "args": [
     "--directory",
@@ -45,7 +45,7 @@ uv python list
   ],
   "env": {
     "OPENAI_API_URL": "YOUR_API_URL",
-    "OPENAI_API_KEY": "sk-YOU_API_KEY"
+    "OPENAI_API_KEY": "YOU_API_KEY"
   }
 }
 ```
