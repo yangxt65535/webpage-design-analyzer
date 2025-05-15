@@ -1,19 +1,10 @@
-# webpage-design-analyzer-mcp
+# webpage-design-analyzer
 
-Python实现的MCP服务器，提供本地图片绝对路径，通过调用视觉模型 API，生成前端页面的设计文档。
+提供本地图片，通过调用视觉模型 API，生成前端页面的设计文档。
 
-## API
+## 环境要求
 
-### Tools
-
-- analyze_image
-  - 通过调用视觉大模型 API，分析页面设计图，制定开发方案
-  - Input: `image_path`(string) 图片在设备上的绝对路径
-  - Return (string): Markdown 格式输出的页面开发方案
-
-## 启动服务
-
-项目使用 uv 管理，uv 是一个基于 Rust 开发的高性能 Python 包、项目管理器，通过以下方式安装：
+本项目使用 uv 管理，uv 是一个基于 Rust 开发的高性能 Python 包管理器，可通过以下方式安装：
 
 ```bash
 # Bash
@@ -23,29 +14,38 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-uv 通过识别 `pyproject.toml` 与 `.python-version` 中的相关字段使用特定的 Python 版本。项目默认使用 Python 3.11，如遇版本问题，可直接修改相关字段，也可以使用 uv 的 Python 多版本功能：
+## 运行项目
+
+从 `.env.template` 复制一个 `.env` 文件，将个人的 OPENAI 或兼容 API 信息填入 `.env` 文件。
+
+```
+OPENAI_API_URL=YOUR_API_BASE
+OPENAI_API_KEY=YOUR_API_KEY
+MODEL=YOUR_MODEL  # MODEL为选填项，默认使用 gpt-4.1-mini
+```
+
+直接运行下列命令，uv 将自动使用虚拟环境。初次运行时会在当前目录自动创建虚拟环境并安装依赖。
 
 ```bash
-uv python install 3.11
-uv python list
+uv analyzer.py [IMAGE_PATH]
 ```
 
-在支持 MCP 的客户端中，通过以下方式引入，注意声明 OPENAI 或与其兼容的 API 端点和密钥：
+### 参数说明
 
-```json
-{
-  "key": "WebpageDesignAnalyzer",
-  "description": "提供本地图片绝对路径，通过调用视觉模型 API，生成前端页面的设计文档。",
-  "command": "uv",
-  "args": [
-    "--directory",
-    "C:\\ABSOLUTE\\PATH\\TO\\PROJECT\\FOLDER",
-    "run",
-    "image_analysis_service.py"
-  ],
-  "env": {
-    "OPENAI_API_URL": "YOUR_API_URL",
-    "OPENAI_API_KEY": "YOU_API_KEY"
-  }
-}
-```
+- `IMAGE_PATH`：要分析的图片文件路径（支持JPG/PNG等常见格式）
+
+### 输出
+
+页面开发方案将会输出到**与输入文件同名的 Markdown文件**，包含：
+1. 页面布局分析
+2. 内容与功能描述
+3. 公共样式表格
+
+### FAQ
+
+- uv 通过识别 `pyproject.toml` 与 `.python-version` 中的相关字段使用特定的 Python 版本。项目默认使用 Python 3.11，如遇版本问题，可直接修改相关字段，也可以使用 uv 的 Python 多版本功能：
+
+  ```bash
+  uv python install 3.11
+  uv python list
+  ```

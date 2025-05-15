@@ -1,9 +1,9 @@
 import base64
 import os
 import requests
-
+import argparse
+from PIL import Image
 from dotenv import load_dotenv
-from mcp.server.fastmcp import FastMCP
 
 load_dotenv()
     
@@ -64,7 +64,7 @@ class WebpageDesignAnalyzer:
             ]
         }
         
-        return data, headers
+        return headers, data
 
     def analyze_image(self, image_path):
         try:
@@ -84,22 +84,34 @@ class WebpageDesignAnalyzer:
         
         return result
 
-analyzer = WebpageDesignAnalyzer()
-
-mcp = FastMCP("image_analysis_service")
-
-@mcp.tool()
-async def analyze_image(image_path: str):
-    """
-    调用视觉模型API服务分析网页设计图内容，并返回AI的分析结果
-    Args:
-        image_path: string, 要分析的图片绝对路径
+def validate_image_file(image_path):
+    """验证文件是否为有效的图片文件"""
+    if not os.path.exists(image_path):
+        raise ValueError(f"文件不存在: {image_path}")
     
-    Returns: 
-        string, AI对图片的分析结果
-    """
-    return analyzer.analyze_image(image_path)
+    try:
+        with Image.open(image_path) as img:
+            img.verify()  # 验证图片完整性
+    except Exception as e:
+        raise ValueError(f"无效的图片文件: {str(e)}")
     
-    # 启动服务
+    return True
+
 if __name__ == "__main__":
-    mcp.run(transport='stdio')
+    parser = argparse.ArgumentParser(description='网页设计图分析工具')
+    parser.add_argument('image_path', type=str, help='要分析的图片路径')
+    args = parser.parse_args()
+
+    analyzer = WebpageDesignAnalyzer()
+    
+    try:
+        validate_image_file(args.image_path)
+        print("正在分析图片，请稍候...")
+        result = analyzer.analyze_image(args.image_path)
+        output_path = os.path.splitext(args.image_path)[0] + ".md"
+        print(f"分析完成，输出到{output_path}")
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(result)
+    except ValueError as e:
+        print(f"错误: {str(e)}")
+        exit(1)

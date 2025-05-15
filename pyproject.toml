@@ -1,11 +1,11 @@
 [project]
-name = "webpage-design-analyzer-mcp"
+name = "webpage-design-analyzer"
 version = "0.1.0"
-description = "Python实现的MCP服务器，提供本地图片绝对路径，通过调用视觉模型 API，生成前端页面的设计文档。"
+description = "提供本地图片，通过调用视觉模型 API，生成前端页面的设计文档。"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "dotenv>=0.9.9",
-    "mcp[cli]>=1.8.1",
+    "pillow>=11.2.1",
     "requests>=2.32.3",
 ]
