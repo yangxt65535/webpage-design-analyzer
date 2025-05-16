@@ -16,32 +16,43 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 ## 运行项目
 
-从 `.env.template` 复制一个 `.env` 文件，将个人的 OPENAI 或兼容 API 信息填入 `.env` 文件。
+### 安装项目
 
-```
-OPENAI_API_URL=YOUR_API_BASE
-OPENAI_API_KEY=YOUR_API_KEY
-MODEL=YOUR_MODEL  # MODEL为选填项，默认使用 gpt-4.1-mini
-```
+建设中
 
-直接运行下列命令，uv 将自动使用虚拟环境。初次运行时会在当前目录自动创建虚拟环境并安装依赖。
+### 源码运行
 
-```bash
-uv analyzer.py [IMAGE_PATH]
-```
+#### 运行步骤
 
-### 参数说明
+1. 克隆本仓库
+
+2. 从 `.env.template` 复制一个 `.env` 文件，将个人的 OPENAI 或兼容 API 信息填入 `.env` 文件。
+
+    ```
+    OPENAI_API_URL=YOUR_API_BASE
+    OPENAI_API_KEY=YOUR_API_KEY
+    MODEL=YOUR_MODEL  # MODEL为选填项，默认使用 gpt-4.1-mini
+    ```
+
+3. 直接运行命令，uv 将自动使用虚拟环境。初次运行时会在当前目录自动创建虚拟环境并安装依赖。
+
+    ```bash
+    uv analyzer.py [IMAGE_PATH]
+    ```
+
+#### 参数说明
 
 - `IMAGE_PATH`：要分析的图片文件路径（支持JPG/PNG等常见格式）
 
-### 输出
+#### 输出
 
 页面开发方案将会输出到**与输入文件同名的 Markdown文件**，包含：
+
 1. 页面布局分析
 2. 内容与功能描述
 3. 公共样式表格
 
-### FAQ
+## FAQ
 
 - uv 通过识别 `pyproject.toml` 与 `.python-version` 中的相关字段使用特定的 Python 版本。项目默认使用 Python 3.11，如遇版本问题，可直接修改相关字段，也可以使用 uv 的 Python 多版本功能：
 
