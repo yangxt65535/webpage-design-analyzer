@@ -5,8 +5,6 @@ import argparse
 from PIL import Image
 from dotenv import load_dotenv
 
-load_dotenv()
-    
 class WebpageDesignAnalyzer:
     FE_EXPERT_SYSTEM_PROMPT = """
         你是一个专业的前端开发工程师，你的工作是仔细观察提供的前端页面设计图，分析其内容细节、样式布局等关键信息，输出设计文档。以下是设计要求：
@@ -21,6 +19,7 @@ class WebpageDesignAnalyzer:
     FE_EXPERT_USER_PROMPT = "根据这张前端页面设计图，分析页面内容、布局与样式。"
     
     def __init__(self):
+        load_dotenv()
         self.api_base = os.getenv("OPENAI_API_URL")
         self.api_key = os.getenv("OPENAI_API_KEY")
         self.model = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
@@ -97,7 +96,7 @@ def validate_image_file(image_path):
     
     return True
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description='网页设计图分析工具')
     parser.add_argument('image_path', type=str, help='要分析的图片路径')
     args = parser.parse_args()
@@ -115,3 +114,6 @@ if __name__ == "__main__":
     except ValueError as e:
         print(f"错误: {str(e)}")
         exit(1)
+
+if __name__ == "__main__":
+    main()
